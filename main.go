@@ -350,8 +350,8 @@ func main() {
 			fmt.Print(au.Red(fmt.Sprintf("Error in executing custom script %v\n", err)))
 			os.Exit(1)
 		}
-		os.Exit(0)
-		return
+		//os.Exit(0)
+		//return
 	}
 
 	if *verbose {
@@ -647,14 +647,14 @@ func generate(conf *dbmeta.Config) error {
 
 		modelInfo := conf.CreateContextForTableFile(tableInfo)
 
-		//if !conf.Nodb {
-		modelFile := filepath.Join(modelDir, CreateGoSrcFileName(tableName))
-		err = conf.WriteTemplate(ModelTmpl, modelInfo, modelFile)
-		if err != nil {
-			fmt.Print(au.Red(fmt.Sprintf("Error writing file: %v\n", err)))
-			os.Exit(1)
+		if !conf.Nodb {
+			modelFile := filepath.Join(modelDir, CreateGoSrcFileName(tableName))
+			err = conf.WriteTemplate(ModelTmpl, modelInfo, modelFile)
+			if err != nil {
+				fmt.Print(au.Red(fmt.Sprintf("Error writing file: %v\n", err)))
+				os.Exit(1)
+			}
 		}
-		//}
 
 		if *restAPIGenerate {
 			restFile := filepath.Join(apiDir, CreateGoSrcFileName(tableName))
