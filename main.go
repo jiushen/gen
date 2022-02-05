@@ -51,6 +51,7 @@ var (
 	module          = goopt.String([]string{"--module"}, "example.com/example", "module path")
 	overwrite       = goopt.Flag([]string{"--overwrite"}, []string{"--no-overwrite"}, "Overwrite existing files (default)", "disable overwriting files")
 	windows         = goopt.Flag([]string{"--windows"}, []string{}, "use windows line endings in generated files", "")
+	nodb            = goopt.Flag([]string{"--nodb"}, []string{}, "generate from model folder, not from database", "")
 	noColorOutput   = goopt.Flag([]string{"--no-color"}, []string{}, "disable color output", "")
 
 	contextFileName  = goopt.String([]string{"--context"}, "", "context file (json) to populate context with")
@@ -284,7 +285,7 @@ func main() {
 	}
 
 	var dbTables []string
-	if conf.SQLType == "gormobj" {
+	if conf.Nodb {
 		dummydb, _ := gorm.Open(tests.DummyDialector{})
 		stmt := gorm.Statement{DB: dummydb}
 		err := stmt.Parse(model.Artist{})
@@ -410,6 +411,7 @@ func initialize(conf *dbmeta.Config) {
 	conf.Verbose = *verbose
 	conf.OutDir = *outDir
 	conf.Overwrite = *overwrite
+	conf.Nodb = *nodb
 	conf.LineEndingCRLF = *windows
 
 	conf.SQLConnStr = *sqlConnStr
@@ -1074,6 +1076,9 @@ func regenCmdLine() []string {
 	}
 	if *overwrite {
 		cmdLine = append(cmdLine, fmt.Sprintf(" --overwrite"))
+	}
+	if *nodb {
+		cmdLine = append(cmdLine, fmt.Sprintf(" --nodb"))
 	}
 
 	if *contextFileName != "" {

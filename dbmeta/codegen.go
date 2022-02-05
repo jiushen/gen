@@ -909,6 +909,7 @@ type Config struct {
 	Verbose               bool
 	OutDir                string
 	Overwrite             bool
+	Nodb                  bool
 	LineEndingCRLF        bool
 	CmdLine               string
 	CmdLineWrapped        string
