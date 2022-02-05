@@ -24,15 +24,15 @@ var (
     // FetchDDL action when fetching ddl info from db
     FetchDDL = Action(5)
 
-    tables map[string]*TableInfo
+    //tables map[string]*TableInfo
 )
 
 
 func init()  {
-    tables = make(map[string]*TableInfo)
-    {{ range $tableName, $tableInfo := .tableInfos }}
-    tables["{{$tableName}}"] = {{$tableName}}TableInfo
-    {{- end}}
+    //tables = make(map[string]*TableInfo)
+    //{{ range $tableName, $tableInfo := .tableInfos }}
+    //tables["{{$tableName}}"] = {{$tableName}}TableInfo
+    //{{- end}}
 }
 
 // String describe the action
@@ -94,7 +94,7 @@ type ColumnInfo struct {
 }
 
 // GetTableInfo retrieve TableInfo for a table
-func GetTableInfo(name string) (*TableInfo, bool) {
-    val, ok :=  tables[name]
-    return val, ok
-}
+//func GetTableInfo(name string) (*TableInfo, bool) {
+//    val, ok :=  tables[name]
+//    return val, ok
+//}

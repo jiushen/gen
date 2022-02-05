@@ -54,33 +54,33 @@ type {{.StructName}} struct {
 
 {{end}}
 
-var {{.TableName}}TableInfo = &TableInfo {
-	Name: "{{.TableName}}",
-	Columns: []*ColumnInfo{
-        {{range .TableInfo.CodeFields}}
-        &ColumnInfo{
-        	Index: {{.ColumnMeta.Index}},
-        	Name: "{{.ColumnMeta.Name}}",
-        	Comment: `{{.ColumnMeta.Comment}}`,
-        	Notes: `{{.ColumnMeta.Notes}}`,
-        	Nullable: {{.ColumnMeta.Nullable}},
-        	DatabaseTypeName: "{{.ColumnMeta.DatabaseTypeName}}",
-        	DatabaseTypePretty: "{{.ColumnMeta.DatabaseTypePretty}}",
-        	IsPrimaryKey: {{.ColumnMeta.IsPrimaryKey}},
-        	IsAutoIncrement: {{.ColumnMeta.IsAutoIncrement}},
-        	IsArray: {{.ColumnMeta.IsArray}},
-        	ColumnType: "{{.ColumnMeta.ColumnType}}",
-        	ColumnLength: {{.ColumnMeta.ColumnLength}},
-        	GoFieldName: "{{.GoFieldName}}",
-        	GoFieldType: "{{.GoFieldType}}",
-        	JSONFieldName: "{{.JSONFieldName}}",
-        	ProtobufFieldName: "{{.ProtobufFieldName}}",
-        	ProtobufType: "{{.ProtobufType}}",
-        	ProtobufPos: {{.ProtobufPos}},
-        },
-        {{end}}
-	},
-}
+//var {{.TableName}}TableInfo = &TableInfo {
+//	Name: "{{.TableName}}",
+//	Columns: []*ColumnInfo{
+//        {{range .TableInfo.CodeFields}}
+//        &ColumnInfo{
+//        	Index: {{.ColumnMeta.Index}},
+//        	Name: "{{.ColumnMeta.Name}}",
+//        	Comment: `{{.ColumnMeta.Comment}}`,
+//        	Notes: `{{.ColumnMeta.Notes}}`,
+//        	Nullable: {{.ColumnMeta.Nullable}},
+//        	DatabaseTypeName: "{{.ColumnMeta.DatabaseTypeName}}",
+//        	DatabaseTypePretty: "{{.ColumnMeta.DatabaseTypePretty}}",
+//        	IsPrimaryKey: {{.ColumnMeta.IsPrimaryKey}},
+//        	IsAutoIncrement: {{.ColumnMeta.IsAutoIncrement}},
+//        	IsArray: {{.ColumnMeta.IsArray}},
+//        	ColumnType: "{{.ColumnMeta.ColumnType}}",
+//        	ColumnLength: {{.ColumnMeta.ColumnLength}},
+//        	GoFieldName: "{{.GoFieldName}}",
+//        	GoFieldType: "{{.GoFieldType}}",
+//        	JSONFieldName: "{{.JSONFieldName}}",
+//        	ProtobufFieldName: "{{.ProtobufFieldName}}",
+//        	ProtobufType: "{{.ProtobufType}}",
+//        	ProtobufPos: {{.ProtobufPos}},
+//        },
+//        {{end}}
+//	},
+//}
 
 
 
@@ -104,6 +104,6 @@ func ({{.ShortStructName}} *{{.StructName}}) Validate(action Action) error {
 }
 
 // TableInfo return table meta data
-func ({{.ShortStructName}} *{{.StructName}}) TableInfo() *TableInfo {
-	return {{.TableName}}TableInfo
-}
+//func ({{.ShortStructName}} *{{.StructName}}) TableInfo() *TableInfo {
+//	return {{.TableName}}TableInfo
+//}
