@@ -6,7 +6,6 @@ import (
 
     "github.com/satori/go.uuid"
     {{if .UseGuregu}} "github.com/guregu/null" {{end}}
-	"gorm.io/gorm"
 )
 
 /*
@@ -84,7 +83,7 @@ func ({{.ShortStructName}} *{{.StructName}}) TableName() string {
 }
 
 // BeforeSave invoked before saving, return an error if field is not populated.
-func ({{.ShortStructName}} *{{.StructName}}) BeforeSave(tx *gorm.DB) error {
+func ({{.ShortStructName}} *{{.StructName}}) BeforeSave() error {
 	return nil
 }
 

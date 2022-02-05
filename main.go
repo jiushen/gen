@@ -5,7 +5,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"gen/model"
+	"github.com/jimsmart/schema"
 	"go/build"
+	"gorm.io/gorm"
+	"gorm.io/gorm/utils/tests"
 	"io"
 	"io/ioutil"
 	"os"
@@ -17,7 +21,6 @@ import (
 	"github.com/droundy/goopt"
 	"github.com/gobuffalo/packd"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/jimsmart/schema"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/lib/pq"
 	"github.com/logrusorgru/aurora"
@@ -205,30 +208,41 @@ func main() {
 		return
 	}
 
-	db, err := initializeDB()
-	if err != nil {
-		fmt.Print(au.Red(fmt.Sprintf("Error in initializing db %v\n", err)))
-		os.Exit(1)
-		return
-	}
+	//dummydb, _ := gorm.Open(tests.DummyDialector{})
+	//stmt := gorm.Statement{DB: dummydb}
+	//db, _ := dummydb.DB()
+	//err := stmt.Parse(model.Album{})
+	//if err != nil {
+	//	return
+	//}
+	//
+	//var dbTables []string
+	//dbTables = append(dbTables, stmt.Table)
 
-	defer db.Close()
-
-	var dbTables []string
-	// parse or read tables
-	if *sqlTable != "" {
-		dbTables = strings.Split(*sqlTable, ",")
-	} else {
-		schemaTables, err := schema.TableNames(db)
-		if err != nil {
-			fmt.Print(au.Red(fmt.Sprintf("Error in fetching tables information from %s information schema from %s\n", *sqlType, *sqlConnStr)))
-			os.Exit(1)
-			return
-		}
-		for _, st := range schemaTables {
-			dbTables = append(dbTables, st[1]) // s[0] == sqlDatabase
-		}
-	}
+	//db, err := initializeDB()
+	//if err != nil {
+	//	fmt.Print(au.Red(fmt.Sprintf("Error in initializing db %v\n", err)))
+	//	os.Exit(1)
+	//	return
+	//}
+	//
+	//defer db.Close()
+	//
+	//var dbTables []string
+	//// parse or read tables
+	//if *sqlTable != "" {
+	//	dbTables = strings.Split(*sqlTable, ",")
+	//} else {
+	//	schemaTables, err := schema.TableNames(db)
+	//	if err != nil {
+	//		fmt.Print(au.Red(fmt.Sprintf("Error in fetching tables information from %s information schema from %s\n", *sqlType, *sqlConnStr)))
+	//		os.Exit(1)
+	//		return
+	//	}
+	//	for _, st := range schemaTables {
+	//		dbTables = append(dbTables, st[1]) // s[0] == sqlDatabase
+	//	}
+	//}
 
 	if strings.HasPrefix(*modelNamingTemplate, "'") && strings.HasSuffix(*modelNamingTemplate, "'") {
 		*modelNamingTemplate = strings.TrimSuffix(*modelNamingTemplate, "'")
@@ -244,7 +258,7 @@ func main() {
 	conf := dbmeta.NewConfig(LoadTemplate)
 	initialize(conf)
 
-	err = loadDefaultDBMappings(conf)
+	err := loadDefaultDBMappings(conf)
 	if err != nil {
 		fmt.Print(au.Red(fmt.Sprintf("Error processing default mapping file error: %v\n", err)))
 		os.Exit(1)
@@ -269,7 +283,42 @@ func main() {
 		}
 	}
 
-	tableInfos = dbmeta.LoadTableInfo(db, dbTables, excludeDbTables, conf)
+	var dbTables []string
+	if conf.SQLType == "gormobj" {
+		dummydb, _ := gorm.Open(tests.DummyDialector{})
+		stmt := gorm.Statement{DB: dummydb}
+		err := stmt.Parse(model.Artist{})
+		if err != nil {
+			return
+		}
+		dbTables = append(dbTables, stmt.Table)
+		tableInfos = dbmeta.LoadModelInfo(stmt, dbTables, excludeDbTables, conf)
+	} else {
+		db, err := initializeDB()
+		if err != nil {
+			fmt.Print(au.Red(fmt.Sprintf("Error in initializing db %v\n", err)))
+			os.Exit(1)
+			return
+		}
+
+		defer db.Close()
+
+		// parse or read tables
+		if *sqlTable != "" {
+			dbTables = strings.Split(*sqlTable, ",")
+		} else {
+			schemaTables, err := schema.TableNames(db)
+			if err != nil {
+				fmt.Print(au.Red(fmt.Sprintf("Error in fetching tables information from %s information schema from %s\n", *sqlType, *sqlConnStr)))
+				os.Exit(1)
+				return
+			}
+			for _, st := range schemaTables {
+				dbTables = append(dbTables, st[1]) // s[0] == sqlDatabase
+			}
+		}
+		tableInfos = dbmeta.LoadTableInfo(db, dbTables, excludeDbTables, conf)
+	}
 
 	if len(tableInfos) == 0 {
 		fmt.Print(au.Red(fmt.Sprintf("No tables loaded\n")))

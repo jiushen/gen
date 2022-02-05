@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"gorm.io/gorm"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -670,6 +671,66 @@ func FindInSlice(slice []string, val string) (int, bool) {
 		}
 	}
 	return -1, false
+}
+
+// LoadTableInfo load table info from db connection, and list of tables
+func LoadModelInfo(stmt gorm.Statement, dbTables []string, excludeDbTables []string, conf *Config) map[string]*ModelInfo {
+
+	tableInfos := make(map[string]*ModelInfo)
+
+	// generate go files for each table
+	var tableIdx = 0
+	for i, tableName := range dbTables {
+
+		_, ok := FindInSlice(excludeDbTables, tableName)
+		if ok {
+			fmt.Printf("Skipping excluded table %s\n", tableName)
+			continue
+		}
+
+		if strings.HasPrefix(tableName, "[") && strings.HasSuffix(tableName, "]") {
+			tableName = tableName[1 : len(tableName)-1]
+		}
+
+		dbMeta, err := LoadGormobjMeta(stmt, tableName)
+		if err != nil {
+			msg := fmt.Sprintf("Warning - LoadMeta skipping table info for %s error: %v\n", tableName, err)
+			if au != nil {
+				fmt.Print(au.Yellow(msg))
+			} else {
+				fmt.Printf(msg)
+			}
+
+			continue
+		}
+
+		modelInfo, err := GenerateModelInfo(tableInfos, dbMeta, tableName, conf)
+		if err != nil {
+			msg := fmt.Sprintf("Error - %v\n", err)
+			if au != nil {
+				fmt.Print(au.Red(msg))
+			} else {
+				fmt.Printf(msg)
+			}
+
+			continue
+		}
+
+		if len(modelInfo.Fields) == 0 {
+			if conf.Verbose {
+				fmt.Printf("[%d] Table: %s - No Fields Available\n", i, tableName)
+			}
+			continue
+		}
+
+		modelInfo.Index = tableIdx
+		modelInfo.IndexPlus1 = tableIdx + 1
+		tableIdx++
+
+		tableInfos[tableName] = modelInfo
+	}
+
+	return tableInfos
 }
 
 // LoadTableInfo load table info from db connection, and list of tables
