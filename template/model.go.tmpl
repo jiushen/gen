@@ -8,6 +8,13 @@ import (
     {{if .UseGuregu}} "github.com/guregu/null" {{end}}
 )
 
+var (
+	_ = time.Second
+	_ = sql.LevelDefault
+	{{if .UseGuregu}} _ = null.Bool{} {{end}}
+	_ = uuid.UUID{}
+)
+
 /*
 DB Table Details
 -------------------------------------

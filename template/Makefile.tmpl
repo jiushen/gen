@@ -87,7 +87,7 @@ build_app: create_dir
 
 example: build_info ## build example binary in bin dir
 	@echo "build example server"
-	swag init --dir .  --generalInfo ./app/server/main.go
+	swag init --parseDependency --parseInternal --dir . --parseDepth 3 --generalInfo ./app/server/main.go
 	make BIN_NAME=example APP_PATH=$(PROJ_PATH)/app/server build_app
 	@echo ''
 	@echo ''
