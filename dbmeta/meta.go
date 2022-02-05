@@ -674,7 +674,7 @@ func FindInSlice(slice []string, val string) (int, bool) {
 }
 
 // LoadTableInfo load table info from db connection, and list of tables
-func LoadModelInfo(stmt gorm.Statement, dbTables []string, excludeDbTables []string, conf *Config) map[string]*ModelInfo {
+func LoadModelInfo(stmts []gorm.Statement, dbTables []string, excludeDbTables []string, conf *Config) map[string]*ModelInfo {
 
 	tableInfos := make(map[string]*ModelInfo)
 
@@ -692,7 +692,7 @@ func LoadModelInfo(stmt gorm.Statement, dbTables []string, excludeDbTables []str
 			tableName = tableName[1 : len(tableName)-1]
 		}
 
-		dbMeta, err := LoadGormobjMeta(stmt, tableName)
+		dbMeta, err := LoadGormobjMeta(stmts[i], tableName)
 		if err != nil {
 			msg := fmt.Sprintf("Warning - LoadMeta skipping table info for %s error: %v\n", tableName, err)
 			if au != nil {

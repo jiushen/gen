@@ -287,13 +287,21 @@ func main() {
 	var dbTables []string
 	if conf.Nodb {
 		dummydb, _ := gorm.Open(tests.DummyDialector{})
-		stmt := gorm.Statement{DB: dummydb}
-		err := stmt.Parse(model.Artist{})
-		if err != nil {
-			return
+
+		models := []interface{}{model.Album{}, model.Artist{}}
+
+		var stmts []gorm.Statement
+		for _, model := range models {
+			stmt := gorm.Statement{DB: dummydb}
+			err := stmt.Parse(model)
+			if err != nil {
+				return
+			}
+			stmts = append(stmts, stmt)
+			dbTables = append(dbTables, stmt.Table)
 		}
-		dbTables = append(dbTables, stmt.Table)
-		tableInfos = dbmeta.LoadModelInfo(stmt, dbTables, excludeDbTables, conf)
+
+		tableInfos = dbmeta.LoadModelInfo(stmts, dbTables, excludeDbTables, conf)
 	} else {
 		db, err := initializeDB()
 		if err != nil {
