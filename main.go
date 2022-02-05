@@ -288,7 +288,7 @@ func main() {
 	if conf.Nodb {
 		dummydb, _ := gorm.Open(tests.DummyDialector{})
 
-		models := []interface{}{model.Album{}, model.Artist{}}
+		models := []interface{}{model.Albums{}, model.Artists{}}
 
 		var stmts []gorm.Statement
 		for _, model := range models {
