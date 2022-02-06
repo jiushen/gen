@@ -21,7 +21,7 @@ endif
 
 
 install: check_prereq ## go install binary info $GOPATH/bin
-	packr2 install github.com/smallnest/gen
+	packr2 install github.com/jiushen/gen
 
 vet: ## run go vet on the project
 	go vet .
@@ -56,7 +56,7 @@ doc: ## run godoc
 	godoc -http=:6060
 
 deps:## analyze project deps
-	go list -f '{{ join .Deps  "\n"}}' . |grep "/" | grep -v "github.com/smallnest/gen"| grep "\." | sort |uniq
+	go list -f '{{ join .Deps  "\n"}}' . |grep "/" | grep -v "github.com/jiushen/gen"| grep "\." | sort |uniq
 
 fmt: ## run fmt on the project
 	## go fmt .
@@ -143,7 +143,7 @@ clean_example: ## remove generated example code
 
 
 run_dbmeta: ## generate example project code from sqlite db in ./examples
-	go run github.com/smallnest/gen/_test/dbmeta \
+	go run github.com/jiushen/gen/_test/dbmeta \
 		--sqltype=sqlite3 \
 		--connstr "./example/sample.db" \
 		--database main
@@ -173,7 +173,7 @@ set_release: ## populate release info
 	./release.sh
 
 gen_readme: set_release ## generate readme file
-	go run github.com/smallnest/gen/readme \
+	go run github.com/jiushen/gen/readme \
 		--sqltype=sqlite3 \
 		--connstr "./example/sample.db" \
 		--database main \

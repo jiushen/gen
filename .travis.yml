@@ -5,7 +5,7 @@ go:
   - tip
 
 before_script:
-  - go get -t -v github.com/smallnest/gen/...
+  - go get -t -v github.com/jiushen/gen/...
 
 script:
   - go build main.go

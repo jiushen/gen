@@ -3,7 +3,7 @@
 [comment]: <> ()
 ## gen
 
-[![License](https://img.shields.io/badge/License-Apache%203.0-blue.svg)](https://opensource.org/licenses/Apache-3.0) [![GoDoc](https://godoc.org/github.com/smallnest/gen?status.png)](http://godoc.org/github.com/smallnest/gen)  [![travis](https://travis-ci.org/smallnest/gen.svg?branch=master)](https://travis-ci.org/smallnest/gen) [![Go Report Card](https://goreportcard.com/badge/github.com/smallnest/gen)](https://goreportcard.com/report/github.com/smallnest/gen)
+[![License](https://img.shields.io/badge/License-Apache%203.0-blue.svg)](https://opensource.org/licenses/Apache-3.0) [![GoDoc](https://godoc.org/github.com/jiushen/gen?status.png)](http://godoc.org/github.com/jiushen/gen)  [![travis](https://travis-ci.org/smallnest/gen.svg?branch=master)](https://travis-ci.org/smallnest/gen) [![Go Report Card](https://goreportcard.com/badge/github.com/jiushen/gen)](https://goreportcard.com/report/github.com/jiushen/gen)
 
 The gen tool produces a CRUD (Create, read, update and delete) REST api project template from a given database. The gen tool will
 connect to the db connection string analyze the database and generate the code based on the flags provided.
@@ -48,10 +48,10 @@ Code generation for a complete CRUD rest project is possible with DAO crud funct
 ## Binary Installation
 ```BASH
 ## install gen tool (should be installed to ~/go/bin, make sure ~/go/bin is in your path.
-$ go get -u github.com/smallnest/gen
+$ go get -u github.com/jiushen/gen
 
 ## download sample sqlite database
-$ wget https://github.com/smallnest/gen/raw/master/example/sample.db
+$ wget https://github.com/jiushen/gen/raw/master/example/sample.db
 
 ## generate code based on the sqlite database (project will be contained within the ./example dir)
 $ gen --sqltype=sqlite3 \
@@ -317,4 +317,4 @@ Table Name: registration_source
 ## Contributors
 - [alexj212](https://github.com/alexj212) -  a big thanks to alexj212 for his contributions
 
-See more contributors: [contributors](https://github.com/smallnest/gen/graphs/contributors)
+See more contributors: [contributors](https://github.com/jiushen/gen/graphs/contributors)

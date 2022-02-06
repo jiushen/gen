@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/jimsmart/schema"
-	"github.com/smallnest/gen/model"
+	"github.com/jiushen/gen/model"
 	"go/build"
 	"gorm.io/gorm"
 	"gorm.io/gorm/utils/tests"
@@ -25,7 +25,7 @@ import (
 	"github.com/logrusorgru/aurora"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/smallnest/gen/dbmeta"
+	"github.com/jiushen/gen/dbmeta"
 )
 
 var (

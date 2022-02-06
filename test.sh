@@ -75,7 +75,7 @@ func_meta() {
     DEFAULT_META_OPTIONS="${DEFAULT_META_OPTIONS} --table=${TABLES}"
   fi
 
-  go run github.com/smallnest/gen/_test/dbmeta \
+  go run github.com/jiushen/gen/_test/dbmeta \
     --sqltype="${DB_TYPE}" \
     --connstr "${DB_CON}" \
     --database "${DB}" ${DEFAULT_META_OPTIONS}

@@ -89,12 +89,15 @@ func main() {
 `, BuildDate, BuildNumber, LatestCommit, RuntimeVer, BuiltOnOs)
 	goopt.Parse(nil)
 
-	db, err := gorm.Open("{{.sqlType}}", "{{.sqlConnStr}}")
-	if err != nil {
-		log.Fatalf("Got error when connect database, the error is '%v'", err)
-	}
+	db, err := gorm.Open({{.sqlType}}.New({{.sqlType}}.Config{
+        DSN: "{{.sqlConnStr}}",
+    }), &gorm.Config{
+        Logger: logger.Default.LogMode(logger.Info),
+    })
+    if err != nil {
+        log.Fatalf("Got error when connect database, the error is '%v'", err)
+    }
 
-	db.LogMode(true)
 	{{.daoPackageName}}.DB = db
 
     {{ $modelPackage := .modelPackageName }}
