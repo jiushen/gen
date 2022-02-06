@@ -1,4 +1,4 @@
-module github.com/jiushen/gen
+module gen
 
 go 1.17
 
@@ -13,6 +13,7 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jimsmart/schema v0.2.0
 	github.com/jinzhu/inflection v1.0.0
+	github.com/jiushen/gen v0.9.31
 	github.com/lib/pq v1.10.4
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible

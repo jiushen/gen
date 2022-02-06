@@ -8,6 +8,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm/logger"
+	"github.com/jiushen/sharding"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"github.com/swaggo/files"       // swagger embed files
@@ -97,6 +100,16 @@ func main() {
     if err != nil {
         log.Fatalf("Got error when connect database, the error is '%v'", err)
     }
+
+    middleware := sharding.Register(sharding.Config{
+		ShardingKey:         "user_id",
+		NumberOfShards:      100,
+		PrimaryKeyGenerator: sharding.PKCustom,
+		PrimaryKeyGeneratorFn: func(index int64) int64 {
+			return 0
+		},
+	}, "orders")
+	db.Use(middleware)
 
 	{{.daoPackageName}}.DB = db
 
