@@ -35,7 +35,7 @@ type Artists struct {
 	//[ 0] ArtistId                                       int(32)              null: false  primary: true   isArray: false  auto: false  col: int             len: 32      default: []
 	ArtistID int32 `gorm:"primary_key;column:ArtistId;type:int;size:32;" json:"artist_id"`
 	//[ 1] Name                                           string               null: true   primary: false  isArray: false  auto: false  col: string          len: 0       default: []
-	Name null.String `gorm:"column:Name;type:string;" json:"name"`
+	Name string `gorm:"column:Name;type:string;" json:"name"`
 }
 
 // TableName sets the insert table name for this struct type

@@ -35,7 +35,7 @@ type Albums struct {
 	//[ 0] AlbumId                                        uint(64)             null: false  primary: true   isArray: false  auto: false  col: uint            len: 64      default: []
 	AlbumID uint32 `gorm:"primary_key;column:AlbumId;type:uint;size:64;" json:"album_id"`
 	//[ 1] Title                                          string(160)          null: true   primary: false  isArray: false  auto: false  col: string          len: 160     default: []
-	Title null.String `gorm:"column:Title;type:string;size:160;" json:"title"`
+	Title string `gorm:"column:Title;type:string;size:160;" json:"title"`
 	//[ 2] ArtistId                                       int(32)              null: false  primary: false  isArray: false  auto: false  col: int             len: 32      default: []
 	ArtistID int32 `gorm:"column:ArtistId;type:int;size:32;" json:"artist_id"`
 }
