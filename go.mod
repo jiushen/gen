@@ -9,11 +9,9 @@ require (
 	github.com/droundy/goopt v0.0.0-20170604162106-0b8effe182da
 	github.com/gobuffalo/packd v1.0.1
 	github.com/gobuffalo/packr/v2 v2.8.3
-	github.com/google/uuid v1.1.2
 	github.com/guregu/null v4.0.0+incompatible
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jimsmart/schema v0.2.0
-	github.com/jinzhu/gorm v1.9.16
 	github.com/jinzhu/inflection v1.0.0
 	github.com/lib/pq v1.10.4
 	github.com/logrusorgru/aurora v2.0.3+incompatible
@@ -26,7 +24,6 @@ require (
 )
 
 require (
-	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/gobuffalo/logger v1.0.6 // indirect
 	github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe // indirect
 	github.com/golang-sql/sqlexp v0.0.0-20170517235910-f1bb20e5a188 // indirect
