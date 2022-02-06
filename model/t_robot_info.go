@@ -5,6 +5,7 @@
 package model
 
 import (
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -13,75 +14,75 @@ const TableNameTRobotInfo = "t_robot_info"
 // TRobotInfos mapped from table <t_robot_info>
 type TRobotInfo struct {
 	//[ 0] FId                                            uint                 null: false  primary: true   isArray: false  auto: true   col: uint            len: -1      default: []
-	FId uint32 `gorm:"primary_key;AUTO_INCREMENT;column:FId;type:uint;" json:"f_id"`
+	FId uint32 `gorm:"primary_key;AUTO_INCREMENT;column:FId;type:int unsigned;" json:"f_id"`
 	//[ 1] FRobotId                                       ubigint              null: false  primary: false  isArray: false  auto: false  col: ubigint         len: -1      default: []
-	FRobotID uint64 `gorm:"column:FRobotId;type:ubigint;" json:"f_robot_id"`
+	FRobotID uint64 `gorm:"column:FRobotId;type:bigint unsigned;" json:"f_robot_id"`
 	//[ 2] FRobotAppId                                    varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotAppID string `gorm:"column:FRobotAppId;type:varchar;size:256;" json:"f_robot_app_id"`
+	FRobotAppID string `gorm:"column:FRobotAppId;type:varchar(256);" json:"f_robot_app_id"`
 	//[ 3] FRobotName                                     varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotName string `gorm:"column:FRobotName;type:varchar;size:256;" json:"f_robot_name"`
+	FRobotName string `gorm:"column:FRobotName;type:varchar(256);" json:"f_robot_name"`
 	//[ 4] FRobotAppkey                                   varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotAppkey string `gorm:"column:FRobotAppkey;type:varchar;size:256;" json:"f_robot_appkey"`
+	FRobotAppkey string `gorm:"column:FRobotAppkey;type:varchar(256);" json:"f_robot_appkey"`
 	//[ 5] FCorpUin                                       uint                 null: false  primary: false  isArray: false  auto: false  col: uint            len: -1      default: []
-	FCorpUin uint32 `gorm:"column:FCorpUin;type:uint;" json:"f_corp_uin"`
+	FCorpUin uint32 `gorm:"column:FCorpUin;type:int unsigned;" json:"f_corp_uin"`
 	//[ 6] FExtUin                                        uint                 null: true   primary: false  isArray: false  auto: false  col: uint            len: -1      default: []
-	FExtUin uint32 `gorm:"column:FExtUin;type:uint;" json:"f_ext_uin"`
+	FExtUin uint32 `gorm:"column:FExtUin;type:int unsigned;" json:"f_ext_uin"`
 	//[ 7] FRobotIcon                                     varchar(512)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 512     default: []
-	FRobotIcon string `gorm:"column:FRobotIcon;type:varchar;size:512;" json:"f_robot_icon"`
+	FRobotIcon string `gorm:"column:FRobotIcon;type:varchar(512);" json:"f_robot_icon"`
 	//[ 8] FRobotIconType                                 utinyint             null: false  primary: false  isArray: false  auto: false  col: utinyint        len: -1      default: [0]
-	FRobotIconType uint32 `gorm:"column:FRobotIconType;type:utinyint;default:0;" json:"f_robot_icon_type"`
+	FRobotIconType uint32 `gorm:"column:FRobotIconType;type:tinyint;default:0;" json:"f_robot_icon_type"`
 	//[ 9] FRobotIconIndex                                utinyint             null: false  primary: false  isArray: false  auto: false  col: utinyint        len: -1      default: [0]
-	FRobotIconIndex uint32 `gorm:"column:FRobotIconIndex;type:utinyint;default:0;" json:"f_robot_icon_index"`
+	FRobotIconIndex uint32 `gorm:"column:FRobotIconIndex;type:tinyint;default:0;" json:"f_robot_icon_index"`
 	//[10] FRobotCompany                                  uint                 null: false  primary: false  isArray: false  auto: false  col: uint            len: -1      default: [0]
-	FRobotCompany uint32 `gorm:"column:FRobotCompany;type:uint;default:0;" json:"f_robot_company"`
+	FRobotCompany uint32 `gorm:"column:FRobotCompany;type:int unsigned;default:0;" json:"f_robot_company"`
 	//[11] FRobotIndustry                                 uint                 null: false  primary: false  isArray: false  auto: false  col: uint            len: -1      default: [0]
-	FRobotIndustry uint32 `gorm:"column:FRobotIndustry;type:uint;default:0;" json:"f_robot_industry"`
+	FRobotIndustry uint32 `gorm:"column:FRobotIndustry;type:int unsigned;default:0;" json:"f_robot_industry"`
 	//[12] FRobotIndustrySub                              uint                 null: false  primary: false  isArray: false  auto: false  col: uint            len: -1      default: [0]
-	FRobotIndustrySub uint32 `gorm:"column:FRobotIndustrySub;type:uint;default:0;" json:"f_robot_industry_sub"`
+	FRobotIndustrySub uint32 `gorm:"column:FRobotIndustrySub;type:int unsigned;default:0;" json:"f_robot_industry_sub"`
 	//[13] FRobotCreateTime                               uint                 null: false  primary: false  isArray: false  auto: false  col: uint            len: -1      default: []
-	FRobotCreateTime uint32 `gorm:"column:FRobotCreateTime;type:uint;" json:"f_robot_create_time"`
+	FRobotCreateTime uint32 `gorm:"column:FRobotCreateTime;type:int unsigned;" json:"f_robot_create_time"`
 	//[14] FRobotActiveFlg                                tinyint              null: false  primary: false  isArray: false  auto: false  col: tinyint         len: -1      default: [0]
 	FRobotActiveFlg int32 `gorm:"column:FRobotActiveFlg;type:tinyint;default:0;" json:"f_robot_active_flg"`
 	//[15] FRobotBubbleFlag                               ubigint              null: false  primary: false  isArray: false  auto: false  col: ubigint         len: -1      default: [0]
-	FRobotBubbleFlag uint64 `gorm:"column:FRobotBubbleFlag;type:ubigint;default:0;" json:"f_robot_bubble_flag"`
+	FRobotBubbleFlag uint64 `gorm:"column:FRobotBubbleFlag;type:bigint unsigned;default:0;" json:"f_robot_bubble_flag"`
 	//[16] FUpdateTime                                    timestamp            null: false  primary: false  isArray: false  auto: false  col: timestamp       len: -1      default: [CURRENT_TIMESTAMP]
 	FUpdateTime time.Time `gorm:"column:FUpdateTime;type:timestamp;default:CURRENT_TIMESTAMP;" json:"f_update_time"`
 	//[17] FThirdpartyAccount                             varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FThirdpartyAccount string `gorm:"column:FThirdpartyAccount;type:varchar;size:256;" json:"f_thirdparty_account"`
+	FThirdpartyAccount string `gorm:"column:FThirdpartyAccount;type:varchar(256);" json:"f_thirdparty_account"`
 	//[18] FRobotApiUrl                                   varchar(2048)        null: true   primary: false  isArray: false  auto: false  col: varchar         len: 2048    default: []
-	FRobotAPIURL string `gorm:"column:FRobotApiUrl;type:varchar;size:2048;" json:"f_robot_api_url"`
+	FRobotAPIURL string `gorm:"column:FRobotApiUrl;type:varchar(2048);" json:"f_robot_api_url"`
 	//[19] FRobotBid                                      varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotBid string `gorm:"column:FRobotBid;type:varchar;size:256;" json:"f_robot_bid"`
+	FRobotBid string `gorm:"column:FRobotBid;type:varchar(256);" json:"f_robot_bid"`
 	//[20] FRobotEname                                    varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotEname string `gorm:"column:FRobotEname;type:varchar;size:256;" json:"f_robot_ename"`
+	FRobotEname string `gorm:"column:FRobotEname;type:varchar(256);" json:"f_robot_ename"`
 	//[21] FRobotCname                                    varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotCname string `gorm:"column:FRobotCname;type:varchar;size:256;" json:"f_robot_cname"`
+	FRobotCname string `gorm:"column:FRobotCname;type:varchar(256);" json:"f_robot_cname"`
 	//[22] FRobotCompanyAppid                             int                  null: true   primary: false  isArray: false  auto: false  col: int             len: -1      default: []
 	FRobotCompanyAppid uint32 `gorm:"column:FRobotCompanyAppid;type:int;" json:"f_robot_company_appid"`
 	//[23] FRobotCompanyUrl                               varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotCompanyURL string `gorm:"column:FRobotCompanyUrl;type:varchar;size:256;" json:"f_robot_company_url"`
+	FRobotCompanyURL string `gorm:"column:FRobotCompanyUrl;type:varchar(256);" json:"f_robot_company_url"`
 	//[24] FRobotCompanyUseProxy                          utinyint             null: false  primary: false  isArray: false  auto: false  col: utinyint        len: -1      default: [0]
-	FRobotCompanyUseProxy uint32 `gorm:"column:FRobotCompanyUseProxy;type:utinyint;default:0;" json:"f_robot_company_use_proxy"`
+	FRobotCompanyUseProxy uint32 `gorm:"column:FRobotCompanyUseProxy;type:tinyint;default:0;" json:"f_robot_company_use_proxy"`
 	//[25] FRobotProjectId                                varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotProjectID string `gorm:"column:FRobotProjectId;type:varchar;size:256;" json:"f_robot_project_id"`
+	FRobotProjectID string `gorm:"column:FRobotProjectId;type:varchar(256);" json:"f_robot_project_id"`
 	//[26] FRobotDomainId                                 varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotDomainID string `gorm:"column:FRobotDomainId;type:varchar;size:256;" json:"f_robot_domain_id"`
+	FRobotDomainID string `gorm:"column:FRobotDomainId;type:varchar(256);" json:"f_robot_domain_id"`
 	//[27] FRobotDomainRepId                              varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotDomainRepID string `gorm:"column:FRobotDomainRepId;type:varchar;size:256;" json:"f_robot_domain_rep_id"`
+	FRobotDomainRepID string `gorm:"column:FRobotDomainRepId;type:varchar(256);" json:"f_robot_domain_rep_id"`
 	//[28] FRobotAppVersion                               varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotAppVersion string `gorm:"column:FRobotAppVersion;type:varchar;size:256;" json:"f_robot_app_version"`
+	FRobotAppVersion string `gorm:"column:FRobotAppVersion;type:varchar(256);" json:"f_robot_app_version"`
 	//[29] FRobotDomainTaskQaId                           varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotDomainTaskQaID string `gorm:"column:FRobotDomainTaskQaId;type:varchar;size:256;" json:"f_robot_domain_task_qa_id"`
+	FRobotDomainTaskQaID string `gorm:"column:FRobotDomainTaskQaId;type:varchar(256);" json:"f_robot_domain_task_qa_id"`
 	//[30] FRobotIsDelete                                 utinyint             null: false  primary: false  isArray: false  auto: false  col: utinyint        len: -1      default: [0]
-	FRobotIsDelete uint32 `gorm:"column:FRobotIsDelete;type:utinyint;default:0;" json:"f_robot_is_delete"`
+	FRobotIsDelete uint32 `gorm:"column:FRobotIsDelete;type:tinyint;default:0;" json:"f_robot_is_delete"`
 	//[31] FRobotDeclId                                   ubigint              null: false  primary: false  isArray: false  auto: false  col: ubigint         len: -1      default: [0]
-	FRobotDeclID uint64 `gorm:"column:FRobotDeclId;type:ubigint;default:0;" json:"f_robot_decl_id"`
+	FRobotDeclID uint64 `gorm:"column:FRobotDeclId;type:bigint unsigned;default:0;" json:"f_robot_decl_id"`
 	//[32] FRobotDomainGossipId                           varchar(256)         null: true   primary: false  isArray: false  auto: false  col: varchar         len: 256     default: []
-	FRobotDomainGossipID string `gorm:"column:FRobotDomainGossipId;type:varchar;size:256;" json:"f_robot_domain_gossip_id"`
+	FRobotDomainGossipID string `gorm:"column:FRobotDomainGossipId;type:varchar(256);" json:"f_robot_domain_gossip_id"`
 	//[33] FRobotCAppKey                                  varchar(255)         null: false  primary: false  isArray: false  auto: false  col: varchar         len: 255     default: []
-	FRobotCAppKey string `gorm:"column:FRobotCAppKey;type:varchar;size:255;" json:"f_robot_c_app_key"`
+	FRobotCAppKey string `gorm:"column:FRobotCAppKey;type:varchar(255);" json:"f_robot_c_app_key"`
 	//[34] FRobotToken                                    varchar(255)         null: false  primary: false  isArray: false  auto: false  col: varchar         len: 255     default: []
-	FRobotToken string `gorm:"column:FRobotToken;type:varchar;size:255;" json:"f_robot_token"`
+	FRobotToken string `gorm:"column:FRobotToken;type:varchar(255);" json:"f_robot_token"`
 }
 
 // TableName TRobotInfo's table name
@@ -90,7 +91,7 @@ func (*TRobotInfo) TableName() string {
 }
 
 // BeforeSave invoked before saving, return an error if field is not populated.
-func (a *TRobotInfo) BeforeSave() error {
+func (a *TRobotInfo) BeforeSave(tx *gorm.DB) error {
 	return nil
 }
 
