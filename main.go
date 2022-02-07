@@ -51,6 +51,9 @@ var (
 	overwrite       = goopt.Flag([]string{"--overwrite"}, []string{"--no-overwrite"}, "Overwrite existing files (default)", "disable overwriting files")
 	windows         = goopt.Flag([]string{"--windows"}, []string{}, "use windows line endings in generated files", "")
 	nodb            = goopt.Flag([]string{"--nodb"}, []string{}, "generate from model folder, not from database", "")
+	shardingTable   = goopt.String([]string{"--sharding_table"}, "", "sharding tables")
+	shardingKey     = goopt.String([]string{"--sharding_key"}, "", "sharding keys")
+	shardingNumber  = goopt.Int([]string{"--sharding_number"}, 0, "sharding number")
 	noColorOutput   = goopt.Flag([]string{"--no-color"}, []string{}, "disable color output", "")
 
 	contextFileName  = goopt.String([]string{"--context"}, "", "context file (json) to populate context with")
@@ -443,6 +446,10 @@ func initialize(conf *dbmeta.Config) {
 	conf.FileNamingTemplate = *fileNamingTemplate
 	conf.ModelNamingTemplate = *modelNamingTemplate
 	conf.FieldNamingTemplate = *fieldNamingTemplate
+
+	conf.Sharding.Table = *shardingTable
+	conf.Sharding.Key = *shardingKey
+	conf.Sharding.Number = *shardingNumber
 
 	conf.Swagger.Version = *swaggerVersion
 	conf.Swagger.BasePath = *swaggerBasePath

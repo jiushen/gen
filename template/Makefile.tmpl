@@ -16,7 +16,7 @@ endif
 
 export COMMIT_CNT := $(shell git rev-list HEAD | wc -l | sed 's/ //g' )
 export BUILD_NUMBER := ${BRANCH}-${COMMIT_CNT}
-export COMPILE_LDFLAGS=-s -X "main.BuildDate=${DATE}" \
+export COMPILE_LDFLAGS= -X "main.BuildDate=${DATE}" \
                           -X "main.LatestCommit=${LATEST_COMMIT}" \
                           -X "main.BuildNumber=${BUILD_NUMBER}" \
                           -X "main.BuiltOnIP=${BUILT_ON_IP}" \
@@ -82,7 +82,7 @@ endif
 
 
 build_app: create_dir
-		packr2 build -o $(BIN_DIR)/$(BIN_NAME) -a -ldflags '$(COMPILE_LDFLAGS)' $(APP_PATH)
+		packr2 build -o $(BIN_DIR)/$(BIN_NAME) -a -gcflags="all=-N -l" -ldflags '$(COMPILE_LDFLAGS)' $(APP_PATH)
 
 
 example: build_info ## build example binary in bin dir

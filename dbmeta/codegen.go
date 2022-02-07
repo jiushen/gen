@@ -581,6 +581,7 @@ func (c *Config) WriteTemplate(genTemplate *GenTemplate, data map[string]interfa
 	data["serverScheme"] = c.ServerScheme
 	data["serverListen"] = c.ServerListen
 	data["SwaggerInfo"] = c.Swagger
+	data["Sharding"] = c.Sharding
 	data["outDir"] = c.OutDir
 	data["Config"] = c
 
@@ -878,6 +879,12 @@ type SwaggerInfoDetails struct {
 	ContactEmail string
 }
 
+type ShardingConfig struct {
+	Table  string
+	Key    string
+	Number int
+}
+
 // Config for generating code
 type Config struct {
 	SQLType               string
@@ -902,6 +909,7 @@ type Config struct {
 	GrpcPackageName       string
 	GrpcFQPN              string
 	Swagger               *SwaggerInfoDetails
+	Sharding              *ShardingConfig
 	ServerPort            int
 	ServerHost            string
 	ServerScheme          string
@@ -939,6 +947,14 @@ func NewConfig(templateLoader TemplateLoader) *Config {
 		},
 		TemplateLoader: templateLoader,
 	}
+
+	conf.Nodb = false
+	conf.Sharding = &ShardingConfig{
+		Table:  "",
+		Key:    "",
+		Number: 0,
+	}
+
 	conf.CmdLineArgs = os.Args
 	conf.CmdLineWrapped = strings.Join(os.Args, " \\\n    ")
 	conf.CmdLine = strings.Join(os.Args, " ")
