@@ -18,19 +18,19 @@ var (
 {{end}}
 
 func config{{.StructName}}Router(router *httprouter.Router) {
-	router.GET("/{{.StructName | toLower}}", GetAll{{.StructName}})
-	router.POST("/{{.StructName | toLower}}", Add{{.StructName}})
-	router.GET("/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", Get{{.StructName}})
-	router.PUT("/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", Update{{.StructName}})
-	router.DELETE("/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", Delete{{.StructName}})
+	router.GET("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}", GetAll{{.StructName}})
+	router.POST("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}", Add{{.StructName}})
+	router.GET("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", Get{{.StructName}})
+	router.PUT("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", Update{{.StructName}})
+	router.DELETE("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", Delete{{.StructName}})
 }
 
 func configGin{{.StructName}}Router(router gin.IRoutes) {
-	router.GET("/{{.StructName | toLower}}", ConverHttprouterToGin(GetAll{{.StructName}}))
-	router.POST("/{{.StructName | toLower}}", ConverHttprouterToGin(Add{{.StructName}}))
-	router.GET("/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", ConverHttprouterToGin(Get{{.StructName}}))
-	router.PUT("/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", ConverHttprouterToGin(Update{{.StructName}}))
-	router.DELETE("/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", ConverHttprouterToGin(Delete{{.StructName}}))
+	router.GET("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}", ConverHttprouterToGin(GetAll{{.StructName}}))
+	router.POST("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}", ConverHttprouterToGin(Add{{.StructName}}))
+	router.GET("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", ConverHttprouterToGin(Get{{.StructName}}))
+	router.PUT("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", ConverHttprouterToGin(Update{{.StructName}}))
+	router.DELETE("/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/:argKfuin{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/:{{$field.PrimaryKeyArgName}}{{end}}{{end -}}", ConverHttprouterToGin(Delete{{.StructName}}))
 }
 
 {{template "api_getall.go.tmpl" .}}

@@ -1,9 +1,9 @@
 {{define "dao_gorm_get.go.tmpl"}}
 // Get{{.StructName}} is a function to get a single record from the {{.TableName}} table in the {{.DatabaseName}} database
 // error - ErrNotFound, db Find error
-func Get{{.StructName}}(ctx context.Context,{{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{$field.PrimaryKeyArgName}} {{$field.GoFieldType}},{{end}}{{end -}}) (record *{{.modelPackageName}}.{{.StructName}}, err error) {
+func Get{{.StructName}}(ctx context.Context,{{ if eq .Sharding.Table .TableName }}argKfuin int64, {{end}}{{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{$field.PrimaryKeyArgName}} {{$field.GoFieldType}},{{end}}{{end -}}) (record *{{.modelPackageName}}.{{.StructName}}, err error) {
 	record = &{{.modelPackageName}}.{{.StructName}}{}
-	if err = DB.First(record, {{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{$field.PrimaryKeyArgName}},{{end}}{{end -}}).Error; err != nil {
+	if err = DB{{ if eq .Sharding.Table .TableName }}.Where("{{.Sharding.Key}}", argKfuin){{end}}.First(record, {{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{$field.PrimaryKeyArgName}},{{end}}{{end -}}).Error; err != nil {
 	    err = ErrNotFound
 		return record, err
 	}

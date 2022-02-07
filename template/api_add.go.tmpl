@@ -4,22 +4,31 @@
 // @Description add to add a single record to {{.TableName}} table in the {{.DatabaseName}} database
 // @Tags {{.StructName}}
 // @Accept  json
-// @Produce  json
+// @Produce  json{{ if eq .Sharding.Table .TableName }}
+// @Param  argKfuin path int64 true "{{.Sharding.Key}}"{{end}}
 // @Param {{.StructName}} body {{.modelPackageName}}.{{.StructName}} true "Add {{.StructName}}"
 // @Success 200 {object} {{.modelPackageName}}.{{.StructName}}
 // @Failure 400 {object} {{.apiPackageName}}.HTTPError
 // @Failure 404 {object} {{.apiPackageName}}.HTTPError
-// @Router /{{.StructName | toLower}} [post]
-// echo '{{ToJSON .TableInfo.Instance 0}}' | http POST "{{$.serverScheme}}://{{$.serverHost}}{{if ne $.serverPort 80}}:{{$.serverPort}}{{end}}/{{.StructName | toLower}}" X-Api-User:user123
+// @Router /{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/{argKfuin}{{end}} [post]
+// echo '{{ToJSON .TableInfo.Instance 0}}' | http POST "{{$.serverScheme}}://{{$.serverHost}}{{if ne $.serverPort 80}}:{{$.serverPort}}{{end}}/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/1{{end}}" X-Api-User:user123
 func Add{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := initializeContext(r)
 	{{.StructName | toLower}} := &{{.modelPackageName}}.{{.StructName}}{}
+
+    {{ if eq .Sharding.Table .TableName }}
+        argKfuin, err := parseInt64(ps, "argKfuin")
+        if err != nil {
+            returnError(ctx, w, r, err)
+            return
+        }
+    {{end}}
 
 	if err := readJSON(r, {{.StructName | toLower}}); err != nil {
 		returnError(ctx, w, r, {{.daoPackageName}}.ErrBadParams)
 		return
 	}
-
+    {{ if eq .Sharding.Table .TableName }}orders.UserID = argKfuin{{end}}
 
    if err := {{.StructName | toLower}}.BeforeSave(dao.DB); err != nil {
       returnError(ctx, w, r, {{.daoPackageName}}.ErrBadParams)
@@ -37,7 +46,7 @@ func Add{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 		return
 	}
 
-    var err error
+    {{ if ne .Sharding.Table .TableName }}var err error{{end}}
 	{{.StructName | toLower}}, _, err = {{.daoPackageName}}.Add{{.StructName}}(ctx, {{.StructName | toLower}})
 	if err != nil {
 		returnError(ctx, w, r, err)

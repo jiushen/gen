@@ -4,10 +4,10 @@
 // params - pagesize - number of records in a page  (defaults to 20)
 // params - order    - db sort order column
 // error - ErrNotFound, db Find error
-func GetAll{{.StructName}}(ctx context.Context, page, pagesize int, order string) (results []*{{.modelPackageName}}.{{.StructName}}, totalRows int64, err error) {
+func GetAll{{.StructName}}(ctx context.Context,{{ if eq .Sharding.Table .TableName }}argKfuin int64, {{end}}page, pagesize int, order string) (results []*{{.modelPackageName}}.{{.StructName}}, totalRows int64, err error) {
 
 	resultOrm := DB.Model(&{{.modelPackageName}}.{{.StructName}}{})
-    resultOrm.Count(&totalRows)
+    resultOrm{{ if eq .Sharding.Table .TableName }}.Where("{{.Sharding.Key}}", argKfuin){{end}}.Count(&totalRows)
 
 	if page > 0 {
 		offset := (page - 1) * pagesize

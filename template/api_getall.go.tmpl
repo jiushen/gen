@@ -4,17 +4,27 @@
 // @Tags {{.StructName}}
 // @Description GetAll{{.StructName}} is a handler to get a slice of record(s) from {{.TableName}} table in the {{.DatabaseName}} database
 // @Accept  json
-// @Produce  json
+// @Produce  json{{ if eq .Sharding.Table .TableName }}
+// @Param  argKfuin path int64 true "{{.Sharding.Key}}"{{ end }}
 // @Param   page     query    int     false        "page requested (defaults to 0)"
 // @Param   pagesize query    int     false        "number of records in a page  (defaults to 20)"
 // @Param   order    query    string  false        "db sort order column"
 // @Success 200 {object} {{.apiPackageName}}.PagedResults{data=[]{{.modelPackageName}}.{{.StructName}}}
 // @Failure 400 {object} {{.apiPackageName}}.HTTPError
 // @Failure 404 {object} {{.apiPackageName}}.HTTPError
-// @Router /{{.StructName | toLower}} [get]
-// http "{{$.serverScheme}}://{{$.serverHost}}{{if ne $.serverPort 80}}:{{$.serverPort}}{{end}}/{{.StructName | toLower}}?page=0&pagesize=20" X-Api-User:user123
+// @Router /{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/{argKfuin}{{end}} [get]
+// http "{{$.serverScheme}}://{{$.serverHost}}{{if ne $.serverPort 80}}:{{$.serverPort}}{{end}}/{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/1{{end}}?page=0&pagesize=20" X-Api-User:user123
 func GetAll{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := initializeContext(r)
+
+	{{ if eq .Sharding.Table .TableName }}
+    	argKfuin, err := parseInt64(ps, "argKfuin")
+    	if err != nil {
+    		returnError(ctx, w, r, err)
+    		return
+    	}
+    {{end}}
+
     page, err := readInt(r, "page", 0)
 	if err != nil || page < 0 {
 		returnError(ctx, w, r, {{.daoPackageName}}.ErrBadParams)
@@ -34,7 +44,7 @@ func GetAll{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter
 		return
 	}
 
-    records, totalRows, err :=  {{.daoPackageName}}.GetAll{{.StructName}}(ctx, int(page), int(pagesize), order)
+    records, totalRows, err :=  {{.daoPackageName}}.GetAll{{.StructName}}(ctx, {{ if eq .Sharding.Table .TableName }}argKfuin, {{end}}int(page), int(pagesize), order)
 	if err != nil {
 	    returnError(ctx, w, r, err)
 		return

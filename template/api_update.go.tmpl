@@ -4,16 +4,26 @@
 // @Description Update a single record from {{.TableName}} table in the {{.DatabaseName}} database
 // @Tags {{.StructName}}
 // @Accept  json
-// @Produce  json
+// @Produce  json{{ if eq .Sharding.Table .TableName }}
+// @Param  argKfuin path int64 true "{{.Sharding.Key}}"{{end}}
 {{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}// @Param  {{ $field.PrimaryKeyArgName }} path {{ $field.SQLMapping.SwaggerType }} true "{{ $field.ColumnMeta.Name }}"{{end}}{{end}}
 // @Param  {{.StructName}} body {{.modelPackageName}}.{{.StructName}} true "Update {{.StructName}} record"
 // @Success 200 {object} {{.modelPackageName}}.{{.StructName}}
 // @Failure 400 {object} {{.apiPackageName}}.HTTPError
 // @Failure 404 {object} {{.apiPackageName}}.HTTPError
-// @Router /{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/{ {{- $field.PrimaryKeyArgName -}} }{{end}}{{end}} [put]
-// echo '{{ToJSON .TableInfo.Instance 0}}' | http PUT "{{$.serverScheme}}://{{$.serverHost}}{{if ne $.serverPort 80}}:{{$.serverPort}}{{end}}/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/{{ $field.FakeData }}{{end}}{{end}}"  X-Api-User:user123
+// @Router /{{.StructName | toLower}}{{ if eq .Sharding.Table .TableName }}/{argKfuin}{{end}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/{ {{- $field.PrimaryKeyArgName -}} }{{end}}{{end}} [put]
+// echo '{{ToJSON .TableInfo.Instance 0}}' | http PUT "{{$.serverScheme}}://{{$.serverHost}}{{if ne $.serverPort 80}}:{{$.serverPort}}{{end}}/{{.StructName | toLower}}{{range $field := .TableInfo.CodeFields}}{{ if $field.PrimaryKeyArgName}}/{{ $field.FakeData }}{{end}}{{end}}{{ if eq .Sharding.Table .TableName }}/12{{end}}"  X-Api-User:user123
 func Update{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	ctx := initializeContext(r)
+
+	{{ if eq .Sharding.Table .TableName }}
+    	argKfuin, err := parseInt64(ps, "argKfuin")
+    	if err != nil {
+    		returnError(ctx, w, r, err)
+    		return
+    	}
+    {{end}}
+
 {{range $field := .TableInfo.CodeFields}}
 {{ if $field.PrimaryKeyArgName }}
 
@@ -29,6 +39,7 @@ func Update{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter
 		returnError(ctx, w, r, {{.daoPackageName}}.ErrBadParams)
 		return
 	}
+	{{ if eq .Sharding.Table .TableName }}orders.UserID = argKfuin{{end}}
 
    if err := {{.StructName | toLower}}.BeforeSave(dao.DB); err != nil {
       returnError(ctx, w, r, {{.daoPackageName}}.ErrBadParams)
@@ -47,6 +58,7 @@ func Update{{.StructName}}(w http.ResponseWriter, r *http.Request, ps httprouter
 	}
 
 	{{.StructName | toLower}}, _, err = {{.daoPackageName}}.Update{{.StructName}}(ctx,
+	{{ if eq .Sharding.Table .TableName }}argKfuin, {{end}}
 	{{range $field := .TableInfo.CodeFields}} {{ if $field.PrimaryKeyArgName }} {{$field.PrimaryKeyArgName}},{{end}}{{end}}
 	{{.StructName | toLower}})
 	if err != nil {
